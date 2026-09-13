@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load i18n wagtailimages_tags app_tags humanize %}
+
+
+{% block content %}
+
+{% image background_image original as background  %}
+{% if background %} 
+    <div class="bg-img d-flex" style="background-image: url('{{ background.url }}');">
+{% else %}
+    <div class="d-flex">
+{% endif %}
+
+    <div class="container-xl bg-color my-3">
+        {# Breadcrumbs #}
+        {% if breadcrumbs %}
+            {% include "partials/_breadcrumbs.html" %}
+        {% endif %}
+
+        {# List of items #}
+        <div class="row text-center justify-content-center">
+            <div class="col-12">
+
+                <h1 class="display-5 py-1 montserrat-400">{{ self.title }}</h1>
+
+                <form class="d-flex mb-2" role="search" action="{{ page.url }}">
+                    <input 
+                        id="queryset" 
+                        name="q" 
+                        class="form-control rounded fs-6 me-2 bg-white border" 
+                        type="search" 
+                        placeholder="{% trans 'Search...' %}" 
+                        aria-label="Search" 
+                        maxlength="30"
+                        value="{{ search_query|default:'' }}"
+                    />
+                    <button class="btn btn-light border-0 text-muted" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+        
+                    {% if search_query %}
+                        <a href="{{ page.url }}" 
+                        class="btn btn-light border-0 text-muted ms-1 rounded-end">
+                            <i class="fas fa-times"></i>
+                        </a>
+                    {% endif %}
+                </form>
+
+                {% if search_query %}
+                    <p class="p-1">{% trans "Showing results for " %} "{{ search_query }}"</p>
+                {% endif %}
+
+                {# List of (sub)categories #}
+                {% for child_page in child_listing_pages %}
+                    <a class="my-1 btn btn-sm btn-info d-inline-block" href="{{ child_page.url }}">{{ child_page }}</a>
+                {% empty %}
+                    <div class="py-3"></div>
+                {% endfor %}
+
+                {# Ordering (or none if search query is applied) #}
+                {% if not search_query %}
+                    <div class="dropdown justify-content-end">
+                        <button class="btn btn-secondary dropdown-toggle mt-3" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            {% trans "Order by" %}
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li><a class="dropdown-item" href="{% build_url_filter request.get_full_path 'order' 'price' %}">{% trans "Price: low to high" %}</a></li>
+                            <li><a class="dropdown-item" href="{% build_url_filter request.get_full_path 'order' 'price-desc' %}">{% trans "Price: high to low" %}</a></li>
+                            <li><a class="dropdown-item" href="{% build_url_filter request.get_full_path 'order' 'date-desc' %}">{% trans "Date: new to old" %}</a></li>
+                            <li><a class="dropdown-item" href="{% build_url_filter request.get_full_path 'order' 'date' %}">{% trans "Date: old to new" %}</a></li>
+                        </ul>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        {# Product list  #}
+        {% include "products/partials/_products.html" %}
+    </div>
+
+</div> {# background img #}
+
+{% endblock content %}

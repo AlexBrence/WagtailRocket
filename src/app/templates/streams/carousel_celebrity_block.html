@@ -1,0 +1,56 @@
+{% load i18n wagtailimages_tags %}
+
+<div class="bg-color p-1 pb-5">
+	{% if self.title %}
+		<div class="container-sm text-center pt-5 pb-3">
+			<h2>{{ self.title }}</h2>
+		</div>
+	{% endif %}
+
+	<div id="carouselCelebrities" class="carousel carousel-dark slide mt-3 mb-2" data-bs-ride="carousel">
+		<div class="carousel-indicators">
+			<div class="d-flex opacity-50">
+				{% for slide in self.slides %}
+					<button 
+						type="button" 
+						data-bs-target="#carouselExampleCaptions" 
+						data-bs-slide-to="{{ forloop.counter0 }}" 
+						aria-label="Slide {{ forloop.counter }}"
+						{% if forloop.counter0 == 0 %}
+							class="active" 
+							aria-current="true" 
+						{% endif %}>
+					</button>
+				{% endfor %}
+			</div>
+		</div>
+
+		<div class="carousel-inner">
+			{% for slide in self.slides %}
+				{% image slide.image fill-500x500 as img %}
+
+				{% if forloop.first %}
+					<div class="carousel-item active text-center">
+				{% else %}
+					<div class="carousel-item text-center">
+				{% endif %}
+
+				<img src="{{ img.url }}" class="rounded" alt="{{ img.alt }}">
+					<div class="carousel-caption d-md-block" style="font-size: 1.0rem;">
+						<span class="d-inline-block bg-light h5 p-1 rounded mt-5">{{ slide.title|linebreaksbr }}</span><br>
+						<span class="d-inline-block text-white rounded shadow-lg bg-color-description p-1">{{ slide.description|linebreaksbr }}</span>
+					</div>
+				</div>
+			{% endfor %}
+
+			<button class="carousel-control-prev" type="button" data-bs-target="#carouselCelebrities" data-bs-slide="prev">
+				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+				<span class="visually-hidden">{% trans "Previous" %}</span>
+			</button>
+			<button class="carousel-control-next" type="button" data-bs-target="#carouselCelebrities" data-bs-slide="next">
+				<span class="carousel-control-next-icon" aria-hidden="true"></span>
+				<span class="visually-hidden">{% trans "Next" %}</span>
+			</button>
+		</div>
+	</div>
+</div>

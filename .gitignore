@@ -1,0 +1,10 @@
+**/__pycache__*
+**/__pycache__/
+**/db.sqlite3
+*.json
+src/media/
+src/.env*
+src/certbot/
+src/logs/
+src/restart.sh
+src/staticfiles/

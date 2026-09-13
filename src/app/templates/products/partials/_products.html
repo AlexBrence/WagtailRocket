@@ -1,0 +1,52 @@
+{% load i18n wagtailimages_tags app_tags humanize %}
+
+<div id="hx-products-and-pagination">
+    {# Product list #}
+    <div class="row">
+        {% for product in objects %}
+            <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 d-flex">
+                {# TODO: create item_listing_card.html #}
+                <div class="card m-3 listing-item flex-fill">
+                    {% image product.thumbnail_image max-400x400 as thumbnail %}
+                    <a href="{{ product.url }}" class="stretched-link">
+                        <img class="card-img-top" 
+                            src="{{ thumbnail.url }}" 
+                            alt="{{ thumbnail.alt }}"
+                            {% if thumbnail.focal_point %}
+                                data-focus-x="{{ thumbnail.focal_point.centroid.x }}"
+                                data-focus-y="{{ thumbnail.focal_point.centroid.y }}"
+                                data-focus-width="{{ thumbnail.focal_point.width }}"
+                                data-focus-height="{{ thumbnail.focal_point.height }}"
+                            {% endif %}
+                        >
+                    </a>
+                    <div class="card-body text-start">
+                        <a class="text-decoration-none" href="{{ product.url }}">
+                            <p class="fs-6">{{ product.title }}</p>
+                        </a>
+                    </div> 
+                    <div class="card-body text-start">
+                        {% if product.price %}
+                            <h5 class="card-subtitle">{{ product.price|intcomma }}
+                                {% if settings.site_settings.Currency.unit %}
+                                    {{ settings.site_settings.Currency.unit }}
+                                {% else %}
+                                    €
+                                {% endif %}
+                            </h5> 
+                        {% else %}
+                            <p class="card-subtitle text-black">{% trans "Ask for price" %}</p>
+                        {% endif %}
+                    </div> 
+                </div>
+            </div>
+        {% empty %}
+            <div class="pt-3 px-5 my-5 text-center align-middle">
+                <h3 class="">{% trans "Nothing here but crickets" %}</h3>
+                <i class="pb-3 px-5 text-center align-middle fs-1">🦗</i>
+            </div>
+        {% endfor%}
+    </div>
+
+    {% include "partials/_pagination.html" with objects=objects hx_id="#hx-products-and-pagination" %}
+</div>

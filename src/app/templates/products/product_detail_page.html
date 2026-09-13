@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% load i18n wagtailcore_tags wagtailimages_tags humanize %}
+
+{% block content %}
+
+{# Background image #}
+{% image background_image original as background  %}
+{% if background %}
+    <div class="bg-img d-flex" style="background-image: url('{{ background.url }}');">
+{% else %}
+    <div class="d-flex">
+{% endif %}
+
+<div class="container-sm my-3">
+    <div class="row mx-1 mx-md-0">
+    <div class="px-1" style="background-color: #fff;">
+        {% include "partials/_breadcrumbs.html" %} 
+    </div>
+
+    <div class="card border-0 shadow-lg p-0">
+        <div class="row g-0">
+            <div class="col-md-6">
+
+                <div id="productImages" class="carousel slide" data-bs-interval="false"
+                    data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        <div class="bg-dark d-flex opacity-75">
+                            <button type="button" data-bs-target="#productImages"
+                                data-bs-slide-to="0" class="active" aria-current="true"
+                                aria-label="Slide 1"></button>
+                            {% for _ in self.product_images.all %}
+                            <li data-target="#productGallery" data-slide-to="{{ forloop.counter }}"></li>
+                            <button type="button" data-bs-target="#productImages"
+                                data-bs-slide-to="{{ forloop.counter }}"
+                                aria-label="Slide {{ forloop.counter }}"></button>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    {% image page.thumbnail_image max-600x600 as thumbnail %}
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img class="d-block img-fluid w-100" src="{{ thumbnail.url }}"
+                                alt="{{ thumbnail.alt }}">
+                        </div>
+
+                        {% for item in self.product_images.all %}
+                            {% image item.image max-600x600 as p_img %}
+                            <div class="carousel-item">
+                                <img class="d-block img-fluid w-100" src="{{ p_img.url }}" alt="{{ p_img.alt }}">
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <button class="carousel-control-prev" type="button"
+                        data-bs-target="#productImages" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon bg-primary" aria-hidden="true"></span>
+                        <span class="visually-hidden">{% trans "Previous" %}</span>
+                    </button>
+                    <button class="carousel-control-next" type="button"
+                        data-bs-target="#productImages" data-bs-slide="next">
+                        <span class="carousel-control-next-icon bg-primary" aria-hidden="true"></span>
+                        <span class="visually-hidden">{% trans "Next" %}</span>
+                    </button>
+                </div>
+
+            </div>
+            <div class="col-md-6 p-2">
+                <div class="card-body">
+                    <p class="card-title h3">{{ page.title }}</p>
+                    {% if page.gender %}
+                        <p class="card-text text-muted pb-4">{{ page.gender|capfirst }}</p>
+                    {% endif %}
+
+                    {{ page.description|richtext }}
+
+                    {% if page.price %}
+                        <p class="card-text h3">{{ page.price|intcomma }}€</p>
+                    {% else %}
+                        <p class="card-text text-black">{% trans "Ask for price" %}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    {% comment %} Random products {% endcomment %}
+    <div class="row justify-content-evenly mt-5 mx-1 mx-md-0 bg-secondary">
+        <h3 class="p-3">{% trans "Check out also..." %}</h3> {# Text should be configurable #}
+
+        {% for random_product in random_products %}
+            <div class="col-xs-12 col-md-6 col-lg-4">
+                {# TODO: create item_listing_card.html #}
+                {% comment %} {% include "products/item_listing_card.html" %} {% endcomment %}
+                <div class="card m-3 listing-item">
+                    {% image random_product.thumbnail_image fill-440x300 as thumbnail %}
+                    <a href="{{ random_product.url }}">
+                        <img class="img-fluid mx-auto" style="width: 100%;" src="{{ thumbnail.url }}"
+                            alt="{{ thumbnail.alt }}">
+                    </a>
+                    <div class="card-body text-start">
+                        <a class="text-decoration-none" href="{{ random_product.url }}">
+                            <p class="fs-5">{{ random_product.title }}</p>
+                        </a>
+                        {% if random_product.price %}
+                        <h5 class="card-subtitle">{{ random_product.price|intcomma }}€</h5>
+                        {% else %}
+                        <p class="card-subtitle">{% trans "Ask for price" %}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+</div> 
+{% endblock content %}

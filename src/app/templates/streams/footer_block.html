@@ -1,0 +1,68 @@
+{% load i18n %}
+
+<div class="bg-primary p-4">
+    <footer>
+        <div class="container">
+            <div class="row p-4 justify-content-evenly text-center mb-0">
+
+                {% with settings.site_settings as site_settings %}
+                    <div class="col-md-6 text-white pb-4">
+                        <h4 class="text-white pb-2">{% trans "Opening hours" %}</h4>
+                        
+                        {% for workday in site_settings.OpeningHours.workdays.all %}
+                            <p class="text-white fs-5 text fw-lighter" style="margin: 0.5rem;">
+                                {{ workday.day }}:
+                                {% if workday.is_closed %}
+                                    {% trans "CLOSED" %}
+                                {% else %}
+                                    {{ workday.from_hour|date:"H:i" }}-{{ workday.to_hour|date:"H:i" }}
+                                    {% if workday.from_hour2 and workday.to_hour2 %}
+                                    ; {{ workday.from_hour2|date:"H:i" }}-{{ workday.to_hour2|date:"H:i" }}
+                                    {% endif %}
+                                {% endif %}
+                            </p>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-md-6 text-white">
+                        <h4 class="text-white pb-2">{% trans "Contacts" %}</h4>
+                        {% for number in site_settings.Contact.phone_numbers.all %}
+                            <p class="fs-5 text fw-lighter" style="margin: 0.5rem;">
+                                <i class="fa fa-phone text-danger"></i>
+                                <span class="text-white">{{ number }}</span>
+                            </p>
+                        {% endfor %}
+                        <hr style="width:75%" class="mx-auto">
+                        {% for email in site_settings.Contact.emails.all %}
+                            <p>
+                                <a class="fs-5 text fw-lighter text-white" href="mailto:{{ email }}">
+                                    <i class="fa fa-envelope text-danger"></i>{{ email }} 
+                                </a>
+                            </p>
+                        {% endfor %}
+                        <hr style="width:75%" class="mx-auto">
+                        {% for location in site_settings.Contact.locations.all %}
+                            <a class="fs-5 text text-white" href="{{ location.maps_url }}" target="_blank">
+                                <i class="fa fa-map-marker text-danger" aria-hidden="true"></i>{{ location.street }}
+                            </a>
+                        {% endfor %}
+                    </div>
+                {% endwith %}
+            </div>
+
+            {% if settings.site_settings.CompanyInfo.show_copyright %}
+                {% with settings.site_settings.CompanyInfo as company %}
+                    <p class="text-muted text-center">
+                        Copyright &copy 
+                        {% if company.year_established %}
+                            {{ company.year_established }}-{% now "Y" %}
+                        {% endif %}
+                        {{ company.name }} {{ company.legal_entity_type }}. All rights reserved.
+                    </p> 
+                {% endwith %}
+            {% endif %}
+
+            <p class="text-muted text-center">Developed by <span class="text-white">Alex Brence</span></p>
+        </div>
+    </footer>
+</div>

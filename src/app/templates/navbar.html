@@ -1,0 +1,80 @@
+{% load i18n static app_tags %}
+
+<nav id="navbar" class="navbar navbar-expand-xl navbar-dark bg-primary sticky-top">
+    <div class="container-fluid">
+        <!-- Logo -->
+        <a class="navbar-brand" href="/">
+            <img id="navbar-logo" 
+                 src="{% static 'app/images/wagtailrocket_logo.jpg' %}" 
+                 alt="LOGO" 
+            />
+        </a>
+
+        <!-- Toggler -->
+        <button class="navbar-toggler" 
+                type="button" 
+                data-bs-toggle="collapse" 
+                data-bs-target="#navbarMain" 
+                aria-controls="navbarMain" 
+                aria-expanded="false" 
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar Content -->
+        <div class="collapse navbar-collapse" id="navbarMain">
+
+            <!-- Menu (Centered) -->
+            <ul class="navbar-nav mx-auto mb-2 mb-xl-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">{% trans "Home" %}</a>
+                </li>
+                {% create_nav_items %}
+            </ul>
+
+            <!-- Social Media -->
+            <div class="d-flex">
+                <ul class="navbar-nav d-flex flex-row shadow-lg bg-dark px-2 rounded mt-3 mt-xl-0">
+                    {% with settings.site_settings.SocialMedia as socials %}
+                        {% if socials.X %}
+                            <li class="nav-item me-3 me-xl-0">
+                                <a class="nav-link fs-4" style="color: #f1f2f3;" href="{{ socials.X }}" target="_blank">
+                                    <i class="fa-brands fa-x-twitter"></i>
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if socials.facebook %}
+                            <li class="nav-item me-3 me-xl-0">
+                                <a class="nav-link fs-4" style="color: #0077ff;" href="{{ socials.facebook }}" target="_blank">
+                                    <i class="fa-brands fa-facebook"></i>
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if socials.instagram %}
+                            <li class="nav-item me-3 me-xl-0">
+                                <a class="nav-link fs-4" style="color: #ea155f;" href="{{ socials.instagram }}" target="_blank">
+                                    <i class="fa-brands fa-instagram"></i>
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if socials.youtube %}
+                            <li class="nav-item me-3 me-xl-0">
+                                <a class="nav-link fs-4" style="color: #ea2024;" href="{{ socials.youtube }}" target="_blank">
+                                    <i class="fa-brands fa-youtube"></i>
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if socials.tiktok %}
+                            <li class="nav-item me-3 me-xl-0">
+                                <a class="nav-link fs-4" style="color: #ffffff;" href="{{ socials.tiktok }}" target="_blank">
+                                    <i class="fab fa-tiktok"></i>
+                                </a>
+                            </li>
+                        {% endif %}
+                    {% endwith %}
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</nav>

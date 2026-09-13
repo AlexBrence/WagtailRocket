@@ -1,0 +1,9 @@
+<ol class="breadcrumb mt-3" style="--bs-breadcrumb-divider: '/';" aria-label="breadcrumb">
+    {% for item in breadcrumbs %}
+        {% if forloop.last %}
+            <li class="breadcrumb-item active" aria-current="page">{{ item.title }}</li>
+        {% else %}
+            <li class="breadcrumb-item"><a href="{{ item.url }}">{{ item.title }}</a></li>
+        {% endif %}
+    {% endfor %}
+</ol>

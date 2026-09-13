@@ -1,0 +1,28 @@
+{% load wagtailimages_tags %}
+
+<div id="hx-posts-and-pagination">
+    {% for post in objects %}
+        <div class="card shadow-sm listing-item-to-left mb-3">
+            <div class="row d-flex">
+                <div class="col-md-6">
+                    {% image post.thumbnail_image original as thumbnail %}
+                    <img class="img-fluid" src="{{ thumbnail.url }}" alt="{{ thumbnail.alt }}">
+                </div>
+                <div class="col-md-6">
+                    <div class="card-body">
+                        <p class="card-text text-muted text-end align-bottom">
+                            <small>{{ post.first_published_at|date:"j. F o, H:s" }}</small>
+                        </p>
+                        <p class="card-title h3">{{ post.title }}</p>
+                        <p class="card-text">{{ post.content|truncatewords_html:50 }}</p>
+                        <p class="card-text"><a href="{{ post.url }}" class="stretched-link"></a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <h4>Nothing here</h4>
+    {% endfor %}
+
+    {% include "partials/_pagination.html" with objects=objects hx_id="#hx-posts-and-pagination" %}
+</div>

@@ -1,0 +1,59 @@
+{% load i18n wagtailimages_tags %}
+
+<div id="carouselCaptions" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+        <div class="d-flex opacity-50">
+            {% for slide in self.slides %}
+                <button 
+                    type="button" 
+                    data-bs-target="#carouselCaptions" 
+                    data-bs-slide-to="{{ forloop.counter0 }}" 
+                    aria-label="Slide {{ forloop.counter }}"
+                    {% if forloop.counter0 == 0 %}
+                    class="active" 
+                    aria-current="true" 
+                    {% endif %}
+                ></button>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="carousel-inner">
+        
+        {% for slide in self.slides %}
+            {% image slide.image original as img %}
+            
+            <div class="carousel-item {% if forloop.first %}active{% endif %}" data-mdb-interval="200">
+                
+                {% if slide.page_chooser.url %}
+                    <a href="{{ slide.page_chooser.url }}">
+                        <img src="{{ img.url }}" class="d-block w-100 carousel-cover" alt="{{ img.alt }}">
+                    </a>
+                {% else %}
+                    <img src="{{ img.url }}" class="d-block w-100 carousel-cover" alt="{{ img.alt }}">
+                {% endif %}
+                
+                {% if slide.title or slide.description %}
+                    <div class="carousel-caption d-md-block" style="font-size: 1rem;">
+                        {% if slide.title %}
+                            <span class="d-inline-block bg-light h5 p-1 rounded mt-5">{{ slide.title }}</span><br>
+                        {% endif %}
+                        {% if slide.description %}
+                            <span class="d-inline-block text-white rounded bg-color-description p-1">{{ slide.description }}</span>
+                        {% endif %}
+                    </div>
+                {% endif %}
+                
+            </div>
+        {% endfor %}
+    </div>
+
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselCaptions" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon bg-primary" aria-hidden="true"></span>
+        <span class="visually-hidden">{% trans "Previous" %}</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselCaptions" data-bs-slide="next">
+        <span class="carousel-control-next-icon bg-primary" aria-hidden="true"></span>
+        <span class="visually-hidden">{% trans "Next" %}</span>
+    </button>
+</div>
+

@@ -1,0 +1,33 @@
+{% load i18n %}
+
+{# Iterate through navbar items dict #}
+{% for item, subitems in navbar.items %}
+
+    {# If it doesn't have a list of subitems then just create a normal link #}
+    {% if not subitems %}
+        <li class="nav-item">
+            <a class="nav-link" href="{{ item.url }}">{{ item }}
+                <span class="visually-hidden"></span> {# TODO: is it needed? #}
+            </a>
+        </li>
+    {# Otherwise create dropdown with child pages #}
+    {% else %}
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                {{ item }}
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                {% for subitem in subitems %}
+                    <li>
+                        <a class="dropdown-item" href="{{ subitem.url }}">{{ subitem }}</a>
+                    </li>
+                {% endfor %}
+
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                    <a class="dropdown-item" href="{{ item.url }}">{% trans "Show All" %}</a>
+                </li>
+            </ul>
+        </li>
+    {% endif %}
+{% endfor %}

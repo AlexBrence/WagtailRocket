@@ -1,0 +1,84 @@
+.listing-item {
+  transition: 0.2s ease;
+}
+
+.listing-item-to-left {
+  transition: 0.2s ease;
+}
+
+.listing-item-to-left:hover {
+  transform: translateX(-10px);
+}
+
+.listing-item:hover {
+  transform: scale(1.1);
+}
+
+.bg-img {
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+.bg-color {
+  background-color: #f7f7f7 !important;
+}
+
+.bg-color-description {
+  background-color: rgba(0, 0, 0, 0.397);
+}
+
+#navbar-logo {
+  height: 4vh;
+  transition: height 0.15s ease-in-out;
+}
+
+#bootstrap-overrides .carousel-control-prev-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23f00' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E");
+}
+
+#bootstrap-overrides .carousel-control-next-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23f00' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E");
+}
+
+.carousel-cover {
+  height: 400px;
+  object-fit: cover;
+}
+
+@media (min-width: 768px) {
+  .carousel-cover {
+    height: 300px;  /* Adjust height for tablets */
+  }
+}
+
+@media (min-width: 992px) {
+  .carousel-cover {
+    height: 450px;  /* Adjust height for desktops */
+  }
+}
+
+@media (min-width: 1200px) {
+  .carousel-cover {
+    height: 600px;  /* Adjust height for large desktops */
+  }
+}
+
+@media (min-width: 1800px) {
+  .carousel-cover {
+    height: 800px;  /* Adjust height for large desktops */
+  }
+}
+
+.richtext-image {
+  max-width: 100%; /* Prevents images from overflowing */
+  height: auto; /* Maintains aspect ratio */
+}
+
+
+.montserrat-400 {
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}

@@ -1,0 +1,73 @@
+{% load i18n app_tags %}
+
+{% if objects.paginator.num_pages > 1 %}
+    <div class="row d-flex mt-4">
+        <div class="col-12">
+            <ul class="pagination justify-content-center">
+                {% if objects.has_previous %}
+                    <li class="page-item">
+                        <a hx-get="{% build_url_filter request.get_full_path 'page_num' '1' %}" 
+                            hx-target="{{ hx_id }}" 
+                            hx-swap="innerHTML"
+                            hx-on::before-request="window.scrollTo({top: 0, behavior: 'smooth'})"
+                            hx-replace-url="true"
+                            class="page-link btn"
+                        >
+                            <i class="fa-solid fa-angles-left fa-lg"></i>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a hx-get="{% build_url_filter request.get_full_path 'page_num' objects.previous_page_number|stringformat:'i' %}" 
+                           hx-target="{{ hx_id }}"
+                           hx-swap="innerHTML"
+                           hx-on::before-request="window.scrollTo({top: 0, behavior: 'smooth'})"
+                           hx-replace-url="true"
+                           class="page-link btn"
+                        >
+                            <i class="fa-solid fa-chevron-left fa-lg"></i>
+                        </a>
+                    </li>
+                {% endif %}
+                
+                {% for page_num in pages %}
+                    <li class="page-item {% if page_num == objects.number %} active {% endif %}">
+                        <a hx-get="{% build_url_filter request.get_full_path 'page_num' page_num|stringformat:'i' %}" 
+                           hx-target="{{ hx_id }}"
+                           hx-swap="innerHTML"
+                           hx-on::before-request="window.scrollTo({top: 0, behavior: 'smooth'})"
+                           hx-replace-url="true"
+                           class="page-link btn"
+                        >
+                            {{ page_num }}
+                        </a>
+                    </li>
+                {% endfor %}
+                
+                {% if objects.has_next %}
+                    <li class="page-item">
+                        <a hx-get="{% build_url_filter request.get_full_path 'page_num' objects.next_page_number|stringformat:'i' %}" 
+                            hx-target="{{ hx_id }}"
+                            hx-swap="innerHTML"
+                            hx-on::before-request="window.scrollTo({top: 0, behavior: 'smooth'})"
+                            hx-replace-url="true"
+                            class="page-link btn"
+                        >
+                            <i class="fa-solid fa-chevron-right fa-lg"></i>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a hx-get="{% build_url_filter request.get_full_path 'page_num' objects.paginator.num_pages|stringformat:'i' %}" 
+                            hx-target="{{ hx_id }}"
+                            hx-swap="innerHTML"
+                            hx-on::before-request="window.scrollTo({top: 0, behavior: 'smooth'})"
+                            hx-replace-url="true"
+                            class="page-link btn"
+                        >
+                            <i class="fa-solid fa-angles-right fa-lg"></i>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+{% endif %}

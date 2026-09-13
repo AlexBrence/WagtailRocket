@@ -1,0 +1,14 @@
+Django==6.0.6 
+Faker==40.23.0 
+django-compressor==4.6.0 
+django-debug-toolbar==7.0.0 
+django-environ==0.14.0 
+django-extensions==4.1 
+django-filter==25.2 
+gunicorn==26.0.0 
+ipython==9.14.1 
+psycopg-binary==3.3.4 
+psycopg==3.3.4 
+wagtail-modeladmin==2.4.0 
+wagtail==7.4.2 
+whitenoise==6.12.0 

@@ -1,0 +1,80 @@
+services:
+  db:
+    image: postgres:17.6
+    container_name: app-db
+    environment:
+      - POSTGRES_USER=${SQL_USER}
+      - POSTGRES_PASSWORD=${SQL_PASSWORD}
+      - POSTGRES_DB=${SQL_DATABASE}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+      - ./postgres/init-db.sh:/docker-entrypoint-initdb.d/init-db.sh:ro
+    networks:
+      - app_netw
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${SQL_USER} -d ${SQL_DATABASE}"]
+      interval: 5s
+      timeout: 5s
+      retries: 8
+      start_period: 10s
+
+  web:
+    container_name: app-web
+    build: .
+    ports:
+      - "8000:8000"
+    command: >
+      sh -c "
+      python3 manage.py collectstatic --noinput &&
+      python3 manage.py compress &&
+      python3 manage.py migrate &&
+      gunicorn app.wsgi:application --bind 0.0.0.0:8000 --workers 4 --threads 1 --max-requests 800 --timeout 300 --max-requests-jitter 80 --access-logfile - --error-logfile -"
+    env_file:
+      - .env
+    volumes:
+      - .:/code
+      - ./logs:/code/logs
+      - static:/code/staticfiles
+      - media:/code/media
+    environment:
+      - "DJANGO_SETTINGS_MODULE=app.settings.production"
+    networks:
+      - app_netw
+    depends_on:
+      db:
+        condition: service_healthy
+
+  nginx:
+    container_name: app-nginx
+    build: ./nginx
+    restart: always
+    volumes:
+      - static:/code/staticfiles:ro
+      - media:/code/media:ro
+      - ./certbot/www:/var/www/certbot:ro
+      - ./certbot/conf:/etc/letsencrypt:ro
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - app_netw
+    depends_on:
+      - web
+
+  certbot:
+    image: certbot/certbot:latest
+    volumes:
+      - ./certbot/www:/var/www/certbot:rw
+      - ./certbot/conf:/etc/letsencrypt:rw
+    networks:
+      - app_netw
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew --webroot -w /var/www/certbot --quiet; sleep 12h & wait $${!}; done;'"
+
+volumes:
+  postgres_data:
+  static:
+  media:
+
+networks:
+  app_netw:
+    name: app_netw

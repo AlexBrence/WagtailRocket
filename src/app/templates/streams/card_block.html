@@ -1,0 +1,31 @@
+{% load i18n wagtailimages_tags %}
+
+<div class="container-sm mb-5">
+    <h1 class="pt-5 pb-3 mb-3 text-center">{{ self.title }}</h1>
+
+    <div class="row">
+        {% for card in self.cards %}
+            {% image card.image width-300 as img %}
+
+            <div class="{% if self.cards|length|divisibleby:2 %} col-md-6 {% else %} col-md-4 {% endif %}">
+                <div class="card mb-3 shadow {% if card.button_page or card.button_url %}listing-item{% endif %} border border-warning shadow-md">
+                    {% if card.button_page or card.button_url %}
+                        <a href="{% if card.button_page %}{{ card.button_page.url }}{% else %}{{ card.button_url }}{% endif %}">
+                            <img src="{{ img.url }}" class="card-img-top img-fluid" alt="{{ img.alt }}">
+                        </a>
+                    {% else %}
+                        <img src="{{ img.url }}" class="card-img-top img-fluid" alt="{{ img.alt }}">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ card.title }}</h5>
+                        <p class="card-text">{{ card.text|linebreaksbr }}</p>
+
+                        <a href="{% if card.button_page %}{{ card.button_page.url }}{% elif card.button_url %}{{ card.button_url }}{% endif %}">
+                            {% trans "More" %}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
