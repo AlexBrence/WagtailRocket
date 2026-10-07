@@ -1,9 +1,11 @@
 # WagtailRocket 🚀 
 
 A boilerplate for CMS websites developed in Wagtail to save you tens of hours of work.
+See [all features](https://wagtailrocket.carrd.co/)
 
 ## 📸 Demo 
 You can see a real-life example for a [motorcycle shop](https://mototim.si/) which was an inspiration for developing the boilerplate. It was derived from the project and improved in many aspects.
+There is [another example here](https://wagtailrocket.com/)
 
 ## ❓ Why this came to life
 Back when the [motorcycle shop](https://mototim.si/) was still running on Wordpress, it was painful to change simple settings on the website, such as opening hours. Not to mention how slow everything was because of the plugins. 
