@@ -1,7 +1,0 @@
-Copyright (c) 2026 WagtailRocket
-
-This source code is proprietary and confidential.
-
-Purchasers are granted a non-exclusive, non-transferable license to use, modify, and deploy this code for their own projects and client work.
-
-Redistribution, resale, or sharing of the source code is not permitted.
