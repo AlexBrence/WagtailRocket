@@ -15,7 +15,7 @@ This is why I decided to develop the website using Wagtail and since I spent a l
 
 ## 📦 Installation
 
-### Development TODO
+### Development
 On your PC, clone the repo, create virtual environment and install dependencies:
 ```bash
 git clone https://github.com/AlexBrence/WagtailRocket.git # or git@github.com:AlexBrence/WagtailRocket.git 
@@ -37,7 +37,13 @@ python manage.py runserver
 ### Production 
 On your hosting server, run these commands:
 ```bash
+# You have 2 options - either clone the repo directly from the github or use your own repo. Choose one of them.
+
+# Option 1: Clone directly from the github on your hosting server
 git clone https://github.com/AlexBrence/WagtailRocket.git # or git@github.com:AlexBrence/WagtailRocket.git if you have ssh configured
+# Option 2: Copy your repo from the PC to the hosting server with the following command
+# scp -r WagtailRocket <remote_host>@<remote_IP>:<path>
+
 cd WagtailRocket
 python -m venv venv
 source venv/bin/activate
